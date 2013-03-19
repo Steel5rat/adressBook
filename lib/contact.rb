@@ -29,4 +29,46 @@ class Contact
     cont = DB.execute("SELECT * FROM contacts WHERE id=#{id};")
     Contact.new(cont[0]['name'],cont[0]['id'])
   end
+
+  def delete
+    Email.delFrID @id
+    Addresses.delFrID @id
+    Number.delFrID @id
+    DB.execute("DELETE FROM contacts WHERE id=#{@id};")
+  end
+
+  def change choice
+      case choice
+        when 'e'
+          puts Email.getRecFrId @id
+          puts "insert id:"
+          idToEdit = gets.chomp
+          puts "insert email:"
+          mail = gets.chomp
+          puts "insert email type:"
+          type = gets.chomp
+          Email.edit(idToEdit,mail,type)
+        when 'a'
+          puts Addresses.getRecFrId @id
+          puts "insert id:"
+          idToEdit = gets.chomp
+          puts "insert address:"
+          mail = gets.chomp
+          puts "insert address type:"
+          type = gets.chomp
+          Addresses.edit(idToEdit,mail,type)
+        when 'n'
+          puts Number.getRecFrId @id
+          puts "insert id:"
+          idToEdit = gets.chomp
+          puts "insert number:"
+          mail = gets.chomp
+          puts "insert number type:"
+          type = gets.chomp
+          Number.edit(idToEdit,mail,type)
+        when 'exit'
+        else
+          invalid
+      end
+  end
 end

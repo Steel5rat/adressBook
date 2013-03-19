@@ -1,12 +1,12 @@
 class Email
-  def initialize (email, email_type, contact=nil)
+  def initialize (email, email_type, contact=nil, id=nil)
     @mail = email
     @type = email_type
     @contact = contact
+    @id = id
   end
 
   def save
-    puts @contact.id
     DB.execute("INSERT INTO emails( email,type,contact_id) VALUES ('#{@mail}','#{@type}','#{@contact.id}');")
   end
 
@@ -17,10 +17,18 @@ class Email
   end
 
   def to_s
-    "#{@mail} #{@type}"
+    "#{@id} #{@mail} #{@type}"
   end
 
   def self.getRecFrId contactId
-    DB.execute("SELECT * FROM emails WHERE contact_id=#{contactId};").map {|row| Email.new(row['email'],row['type'])}
+    DB.execute("SELECT * FROM emails WHERE contact_id=#{contactId};").map {|row| Email.new(row['email'],row['type'],Contact.getFromId(contactId),row['id'])}
+  end
+
+  def self.delFrID contactId
+    DB.execute("DELETE FROM emails WHERE contact_id=#{contactId};")
+  end
+
+  def self.edit(idtoedit,record,type)
+    DB.execute("UPDATE emails SET email='#{record}', type='#{type}' WHERE id='#{idtoedit}'")
   end
 end

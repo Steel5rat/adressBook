@@ -1,8 +1,9 @@
 class Number
-  def initialize (numb ,numb_type, contact)
+  def initialize (numb ,numb_type, contact,id=nil)
     @number = numb
     @type = numb_type
     @contact = contact
+    @id = id
   end
 
   def save
@@ -16,10 +17,18 @@ class Number
   end
 
   def to_s
-    "#{@number} #{@type}"
+    "#{@id} #{@number} #{@type}"
   end
 
   def self.getRecFrId contactId
-    DB.execute("SELECT * FROM number WHERE contact_id=#{contactId};").map {|row| Email.new(row['number'],row['type'])}
+    DB.execute("SELECT * FROM number WHERE contact_id=#{contactId};").map {|row| Email.new(row['number'],row['type'],Contact.getFromId(contactId),row['id'])}
+  end
+
+  def self.delFrID contactId
+    DB.execute("DELETE FROM number WHERE contact_id=#{contactId};")
+  end
+
+  def self.edit(idtoedit,record,type)
+    DB.execute("UPDATE number SET number='#{record}', type='#{type}' WHERE id='#{idtoedit}'")
   end
 end

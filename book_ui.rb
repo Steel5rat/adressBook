@@ -9,7 +9,7 @@ require './lib/number'
 def tasks
   choice = nil
   until choice=='e'
-    puts("'a' to add contact, 'i' to add info, 's' to show all records, 'c' to show info about contact, '4' to change, press 'exit' to exit.")
+    puts("'a' to add contact, 'i' to add info, 's' to show all records, 'c' to show info about contact, '4' to change, 'd' to delete 'exit' to exit.")
     choice = gets.chomp
     case choice
       when 'exit'
@@ -24,24 +24,30 @@ def tasks
         showAllContactInfo
       when '4'
          change
+      when 'd'
+        delete
       else
         invalid
     end
   end
 end
 
-def change   #TODO change mails, etc
+def delete
+  puts "Choose contact:"
+  puts Contact.getAll
+  co = Contact.getFromId(gets.chomp)
+  co.delete
+end
+
+def change
   puts "Choose contact:"
   puts Contact.getAll
   co = Contact.getFromId(gets.chomp)
   choice='a'
   while choice!='exit'
-    puts "'e' to change email, 'a' address, 'n' phone number, 'c' contacts, 'exit' to exit"
-    choice=gets.chomp
-    case choice
-      when 'e'
-
-    end
+    puts "'e' to change email, 'a' address, 'n' phone number, 'exit' to exit"
+    choice = gets.chomp
+    co.change choice
   end
 end
 
