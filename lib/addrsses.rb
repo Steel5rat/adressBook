@@ -1,3 +1,6 @@
+DB = SQLite3::Database.open("adrBook.db")
+DB.results_as_hash = true;
+
 class Addresses
   def initialize (addr, addr_type, contact=nil,id=nil)
     @address = addr
@@ -7,7 +10,7 @@ class Addresses
   end
 
   def save
-    DB.execute("INSERT INTO addresses( address,type,contact_id) VALUES ('#{@address}','#{@address_type}','#{@contact.id}');")
+    DB.execute("INSERT INTO addresses( data,type,contact_id) VALUES ('#{@address}','#{@address_type}','#{@contact.id}');")
   end
 
   def self.getRecords
@@ -21,14 +24,14 @@ class Addresses
   end
 
   def self.getRecFrId contactId
-    DB.execute("SELECT * FROM addresses WHERE contact_id=#{contactId};").map {|row| Email.new(row['address'],row['type'],Contact.getFromId(contactId),row['id'])}
+    DB.execute("SELECT * FROM addresses WHERE contact_id=#{contactId};").map {|row| Email.new(row['data'],row['type'],Contact.getFromId(contactId),row['id'])}
   end
 
-  def self.delFrID contactId
+  def self.delFrID(contactId)
     DB.execute("DELETE FROM addresses WHERE contact_id=#{contactId};")
   end
 
   def self.edit(idtoedit,record,type)
-    DB.execute("UPDATE addresses SET address='#{record}', type='#{type}' WHERE id='#{idtoedit}'")
+    DB.execute("UPDATE addresses SET data='#{record}', type='#{type}' WHERE id='#{idtoedit}'")
   end
 end

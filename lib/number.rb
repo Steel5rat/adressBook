@@ -7,7 +7,7 @@ class Number
   end
 
   def save
-    DB.execute("INSERT INTO number( number,type,contact_id) VALUES ('#{@number}','#{@type}','#{@contact.id}');")
+    DB.execute("INSERT INTO number( data,type,contact_id) VALUES ('#{@number}','#{@type}','#{@contact.id}');")
   end
 
   def self.getRecords
@@ -21,7 +21,7 @@ class Number
   end
 
   def self.getRecFrId contactId
-    DB.execute("SELECT * FROM number WHERE contact_id=#{contactId};").map {|row| Email.new(row['number'],row['type'],Contact.getFromId(contactId),row['id'])}
+    DB.execute("SELECT * FROM number WHERE contact_id=#{contactId};").map {|row| Email.new(row['data'],row['type'],Contact.getFromId(contactId),row['id'])}
   end
 
   def self.delFrID contactId
@@ -29,6 +29,6 @@ class Number
   end
 
   def self.edit(idtoedit,record,type)
-    DB.execute("UPDATE number SET number='#{record}', type='#{type}' WHERE id='#{idtoedit}'")
+    DB.execute("UPDATE number SET data='#{record}', type='#{type}' WHERE id='#{idtoedit}'")
   end
 end

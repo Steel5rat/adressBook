@@ -1,10 +1,9 @@
 require 'sqlite3'
-DB = SQLite3::Database.open("adrBook.db")
-DB.results_as_hash = true;
 require './lib/addrsses'
 require './lib/contact'
 require './lib/email'
 require './lib/number'
+require './lib/tableAccess'
 
 def tasks
   choice = nil

@@ -1,6 +1,6 @@
 class Contact
   attr_reader :id
-  def initialize(name,id=-1)
+  def initialize(name,id=nil)
     @name = name
     @id = id
   end
@@ -12,7 +12,7 @@ class Contact
 
   def getData
      puts "Emails:"
-     puts Email.getRecFrId(@id)
+     puts Access.getRecFrId('emails',@id)
      puts "Addresses:"
      puts Addresses.getRecFrId(@id)
      puts "Phone numbers:"
